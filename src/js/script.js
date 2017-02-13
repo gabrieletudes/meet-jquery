@@ -6,9 +6,24 @@
  * started at 13/02/2017
  */
 
- $( function(){
-     // 1. a with rel="external"
-     $( 'a[ rel*="external"]' ).attr( "target", "_new" );
+const fHandleTab = function( oEvent ){
+    // the link where we have clicked on
+    let $this = $( this );
 
-     // 2. 
+    oEvent.preventDefault();
+    if ($this.parent().hasClass( "active" ) ) {
+        return;
+    }
+    $( "ul.nav.nav-tabs .active" ).removeClass( "active" );
+    $this.parent().addClass( "active" );
+    $( ".tab-pane.active" ).removeClass( "active" );
+    //
+    $( `#${ $this.data( "tab-target" ) }` ).addClass( "active" );
+};
+
+ $( function(){
+    // 1. a with rel="external"
+    $( 'a[ rel*="external"]' ).attr( "target", "_new" );
+    // 2. tabs
+    $( "ul.nav.nav-tabs a" ).on( "click", fHandleTab );
  })
