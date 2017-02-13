@@ -6,7 +6,17 @@
  * started at 09/02/2017
  */
 
-let $tabs;
+let iCurrentFigure = 0,
+    iFigureAmount,
+    aFigures;
+
+const fChangeFigure = function(){
+    aFigures[ iCurrentFigure ].classList.add( "hide" );
+    if ( ++iCurrentFigure === iFigureAmount ) {
+        iCurrentFigure = 0;
+    }
+    aFigures[ iCurrentFigure ].classList.remove( "hide" );
+};
 
 const fHandleTab = function( oEvent ){
     oEvent.preventDefault();
@@ -26,6 +36,7 @@ const fHandleTab = function( oEvent ){
 }
 
 window.addEventListener("load", function(){
+
     // 1. a with rel=external opens in new window
     Array.from( document.querySelectorAll( 'a[rel*="external"]' ) ).forEach( function( $elt ){
         $elt.setAttribute( "target", "_new" );
@@ -37,4 +48,11 @@ window.addEventListener("load", function(){
 
     });
 
-});
+    // 3. trombinoscope
+    ( aFigures = Array.from( document.querySelectorAll( "#trombino figure" ) ) ).forEach( function( $elt, iIndex ){
+        ( iIndex > 0 ) && $elt.classList.add( "hide" );
+    } );
+    iFigureAmount = aFigures.length;
+    setInterval( fChangeFigure, 1000 );
+
+} );
